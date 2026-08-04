@@ -2,6 +2,7 @@ import h5py
 import numpy as np
 import torch
 from torch.utils.data import Dataset
+#from utils.normalizer import normalize_shift
 from utils.normalizer import normalize
 
 class DasDataset(Dataset):
@@ -34,7 +35,8 @@ class DasDataset(Dataset):
         #f = self.get_file(file)
         patch = np.asarray(self.patches[file][patch_index])
         patch= torch.tensor(patch).unsqueeze(0)
-        patch = normalize(patch)
+        #patch, mu = normalize_shift(patch)
+        patch= normalize(patch)
         return patch
     
     def close(self):
