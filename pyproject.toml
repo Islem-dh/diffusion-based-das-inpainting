@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffusion-based-das-inpainting"
+version = "0.1.0"
+description = "Diffusion models for DAS inpainting"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
