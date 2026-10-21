@@ -238,3 +238,6 @@ thesis.zip
 
 #vscode settings
 .vscode/
+#thesis cache
+thesis/
+thesis/
