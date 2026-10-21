@@ -1,0 +1,8 @@
+{
+  "sigma_train": 0.24713784600538183,
+  "mean_train": -0.0006101860681798279,
+  "max_abs_train": 1.1504569053649902,
+  "data_scale": 2.023162409488313,
+  "clip_value": 2.397387999610823,
+  "source": "train_1001.h5, normalized (arcsinh s=50, A_max=12350)"
+}

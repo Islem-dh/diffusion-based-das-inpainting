@@ -128,7 +128,7 @@ class SPCII(nn.Module):
         h_weights = torch.sigmoid(h_weights )
         w_weights = torch.sigmoid(w_weights )
 
-        output = (x * h_weights * w_weights)
+        output = x + (x * h_weights * w_weights)
         return output
 
 class Downsample(nn.Module):

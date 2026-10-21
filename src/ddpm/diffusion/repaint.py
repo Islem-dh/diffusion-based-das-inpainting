@@ -1,11 +1,10 @@
 """RePaint sampling utilities for masked DAS inpainting with diffusion models."""
 
 import torch
-def repaint_schedule(T, jump_length=10, jump_n_sample=3):
+def repaint_schedule(T, jump_length=10, jump_n_sample=3, start_resampling=300):
     """Create the RePaint reverse/forward timestep schedule with resampling jumps."""
 
     # Build reverse diffusion schedule and insert forward jumps for resampling.
-    start_resampling = 300
     jumps = {
         j: jump_n_sample -1
         for j in range(0, T-jump_length, jump_length)
@@ -42,10 +41,8 @@ def forward_one_step(x, scheduler, current, next):
 
 
 
-def sample_repaint(model, scheduler, x0, mask, jump_length=10,jump_n_sample=3, steps_to_save = [999,600,300,100,0]):
+def sample_repaint(model, scheduler, x0, mask, jump_length=10,jump_n_sample=3, start_resampling=300, steps_to_save = [999,600,300,100,0]):
     """Inpaint masked DAS data using RePaint resampling and a trained diffusion model."""
-
-    print(x0.mean())
 
     with torch.no_grad():
         model.eval()
@@ -53,7 +50,7 @@ def sample_repaint(model, scheduler, x0, mask, jump_length=10,jump_n_sample=3, s
         T=scheduler.betas.shape[0]
         mask=mask.to(x0.device)
 
-        times = repaint_schedule(T=T, jump_length=jump_length, jump_n_sample=jump_n_sample)
+        times = repaint_schedule(T=T, jump_length=jump_length, jump_n_sample=jump_n_sample, start_resampling=start_resampling)
         xt=torch.randn_like(x0)
         snapshots = {}
         save_steps = set(steps_to_save)
@@ -64,13 +61,6 @@ def sample_repaint(model, scheduler, x0, mask, jump_length=10,jump_n_sample=3, s
             if next < current : 
 
                 t = torch.full((B,),current,device=x0.device,dtype=torch.long)
-
-                # Diffuse the known region to the current timestep.
-                gaussian_noise=torch.randn_like(x0)
-                x_known_curr=scheduler.add_noise(x0,gaussian_noise,t)
-
-                # Combine known data with the current unknown-region estimate.
-                xt = mask*x_known_curr +(1.0-mask)*xt
 
                 #ddpm prediction
                 predicted_noise=model(xt,t)

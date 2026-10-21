@@ -220,6 +220,21 @@ __marimo__/
 # Project datasets are stored on the server
 data/
 
-# Large model checkpoints stored locally
-checkpoints/
-notebooks/checkpoints/
+# Large model checkpoints stored locally (only the scaling factors are versioned)
+checkpoints/*
+!checkpoints/data_scaling.json
+notebooks/checkpoints
+notebooks/results_eval
+notebooks/archive/checkpoints
+*.pt
+*.pth
+
+# Generated results and logs
+results/
+logs/
+
+# Local archive of the thesis
+thesis.zip
+
+#vscode settings
+.vscode/

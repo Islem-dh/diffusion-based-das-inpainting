@@ -1,0 +1,8 @@
+torch==2.12.0
+numpy==1.26.0
+h5py==3.16.0
+matplotlib==3.10.9
+tqdm==4.65.0
+pyyaml==6.0
+einops==0.8.2
+mamba_ssm @ git+https://github.com/state-spaces/mamba.git@e9594ce1c732d97440f0332fdc43170a2294dbfa

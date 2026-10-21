@@ -5,8 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "diffusion-based-das-inpainting"
 version = "0.1.0"
-description = "Diffusion models for DAS inpainting"
+description = "Diffusion models (RAD, RePaint) for traffic removal in DAS data"
 requires-python = ">=3.10"
+dependencies = ["torch", "numpy", "h5py", "matplotlib", "tqdm", "pyyaml"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

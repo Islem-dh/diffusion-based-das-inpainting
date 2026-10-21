@@ -8,7 +8,7 @@ class RADNoiseScheduler:
 
         self.ph1_steps = ph1_steps
         self.ph2_steps = ph2_steps
-        self.timpesteps= ph1_steps + ph2_steps
+        self.timesteps= ph1_steps + ph2_steps
         self.device=device
 
         # phase 1 linear schedule
@@ -48,23 +48,23 @@ class RADNoiseScheduler:
 
         is_ph1 = is_ph1.reshape(shape)
 
-        b_t1 = mask * beta1
-        b_t2 = (1.0 - mask) * beta2
+        b_t1 = (1.0 - mask) * beta1
+        b_t2 = mask * beta2
 
         b_t = torch.where(is_ph1, b_t1, b_t2)
         a_t = 1.0 - b_t
 
-        a_bar_t1 = mask * alpha_bar1 + (1.0 - mask)
+        a_bar_t1 = (1.0-mask) * alpha_bar1 + mask
 
-        a_bar_t2 = (mask * self.alpha_bar1[-1] + (1.0 - mask) * alpha_bar2)
+        a_bar_t2 = ((1.0-mask) * self.alpha_bar1[-1] + mask * alpha_bar2)
 
         a_bar_t = torch.where(is_ph1, a_bar_t1, a_bar_t2)
 
         b_bar_t = 1.0 - a_bar_t
 
-        a_bar_prev1 = mask * alpha_bar_prev1 +(1.0 - mask)
+        a_bar_prev1 = (1.0 - mask) * alpha_bar_prev1 + mask
 
-        a_bar_prev2 = (mask * self.alpha_bar1[-1] + (1.0 - mask) * alpha_bar_prev2)
+        a_bar_prev2 = ((1.0 - mask) * self.alpha_bar1[-1] + mask * alpha_bar_prev2)
 
         a_bar_prev = torch.where(is_ph1, a_bar_prev1, a_bar_prev2)
 
@@ -96,6 +96,6 @@ class RADNoiseScheduler:
 
         z = torch.randn_like(xt)
         xt_prev = (mu + torch.sqrt(torch.clamp(posterior_variance, min=0.0)) * z)
-        x0_pred = (xt - torch.sqrt(b_bar_t) + noise_pred) / torch.sqrt(a_bar_t)
+        x0_pred = (xt - torch.sqrt(b_bar_t) * noise_pred) / torch.sqrt(a_bar_t)
 
         return xt_prev, x0_pred
