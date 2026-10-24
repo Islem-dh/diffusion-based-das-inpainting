@@ -10,7 +10,7 @@ Two approaches are compared:
 - **RePaint**: zero-shot inpainting with unconditional DDPM priors (SSA, SPCII and Mamba U-Nets), the known region is
   re-inserted at every denoising step.
 
-![Traffic removal with RAD on a real DAS recording](outputs/geo_rad_big_patch.png)
+![Traffic removal with RAD on a real DAS recording](outputs/30s_geo_rad.png)
 
 *Traffic removal with RAD on a 30 s recording over the whole cable: original, automatic traffic mask (black)
 and inpainted results of RAD v2 and v3. Traffic lines are removed while the earthquake arrival is preserved.*
